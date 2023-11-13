@@ -9,48 +9,46 @@
  */
 
 using System.ComponentModel.DataAnnotations;
-using IO.Swagger.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.Annotations;
 using TicTacToeBot.Attributes;
 using TicTacToeBot.Models;
 
-namespace TicTacToeBot.Controllers
+namespace TicTacToeBot.Controllers;
+
+/// <summary>
+/// 
+/// </summary>
+[ApiController]
+public class ServiceApiController : ControllerBase
 { 
     /// <summary>
-    /// 
+    /// Зарегистрировать бота в игровой сессии
     /// </summary>
-    [ApiController]
-    public class ServiceApiController : ControllerBase
+    /// <remarks>Бот с bot_id регистрируется в игровой сессии с session_id</remarks>
+    /// <param name="body">Данные для регистрации бота в сессии</param>
+    /// <param name="sessionId">UUID сессии. Передаем в контейнер через env переменную SESSION_ID</param>
+    /// <response code="200">Бот успешно зарегистрирован в сессии</response>
+    /// <response code="400">Некорректный запрос</response>
+    /// <response code="404">Не найдена игровая сессия с таким session_id</response>
+    [HttpPost]
+    [Route("/sessions/{session_id}/registration")]
+    [ValidateModelState]
+    [SwaggerOperation("RegisterBot")]
+    [SwaggerResponse(statusCode: 200, type: typeof(RegisterBotInSessionResponse), description: "Бот успешно зарегистрирован в сессии")]
+    public virtual IActionResult RegisterBot([FromBody]RegisterBotInSessionRequest body, [FromRoute][Required]string sessionId)
     { 
-        /// <summary>
-        /// Зарегистрировать бота в игровой сессии
-        /// </summary>
-        /// <remarks>Бот с bot_id регистрируется в игровой сессии с session_id</remarks>
-        /// <param name="body">Данные для регистрации бота в сессии</param>
-        /// <param name="sessionId">UUID сессии. Передаем в контейнер через env переменную SESSION_ID</param>
-        /// <response code="200">Бот успешно зарегистрирован в сессии</response>
-        /// <response code="400">Некорректный запрос</response>
-        /// <response code="404">Не найдена игровая сессия с таким session_id</response>
-        [HttpPost]
-        [Route("/sessions/{session_id}/registration")]
-        [ValidateModelState]
-        [SwaggerOperation("RegisterBot")]
-        [SwaggerResponse(statusCode: 200, type: typeof(RegisterBotInSessionResponse), description: "Бот успешно зарегистрирован в сессии")]
-        public virtual IActionResult RegisterBot([FromBody]RegisterBotInSessionRequest body, [FromRoute][Required]string sessionId)
-        { 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(RegisterBotInSessionResponse));
+        //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
+        // return StatusCode(200, default(RegisterBotInSessionResponse));
 
-            //TODO: Uncomment the next line to return response 400 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(400);
+        //TODO: Uncomment the next line to return response 400 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
+        // return StatusCode(400);
 
-            //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(404);
-            const string exampleJson = "{\n  \"figure\" : \"x\"\n}";
-                        var example = JsonConvert.DeserializeObject<RegisterBotInSessionResponse>(exampleJson);            //TODO: Change the data returned
-            return new ObjectResult(example);
-        }
+        //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
+        // return StatusCode(404);
+        const string exampleJson = "{\n  \"figure\" : \"x\"\n}";
+        var example = JsonConvert.DeserializeObject<RegisterBotInSessionResponse>(exampleJson);            //TODO: Change the data returned
+        return new ObjectResult(example);
     }
 }

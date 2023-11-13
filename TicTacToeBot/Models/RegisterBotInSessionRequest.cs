@@ -12,124 +12,123 @@ using System.Runtime.Serialization;
 using System.Text;
 using Newtonsoft.Json;
 
-namespace TicTacToeBot.Models
-{
+namespace TicTacToeBot.Models;
+
+/// <summary>
+/// 
+/// </summary>
+[DataContract]
+public class RegisterBotInSessionRequest : IEquatable<RegisterBotInSessionRequest>
+{ 
     /// <summary>
-    /// 
+    /// Id бота закрепляется за командой в начале турнира. Передаем команде в начале хакатона и он должен быть сохранен в образе
     /// </summary>
-    [DataContract]
-    public class RegisterBotInSessionRequest : IEquatable<RegisterBotInSessionRequest>
-    { 
-        /// <summary>
-        /// Id бота закрепляется за командой в начале турнира. Передаем команде в начале хакатона и он должен быть сохранен в образе
-        /// </summary>
-        /// <value>Id бота закрепляется за командой в начале турнира. Передаем команде в начале хакатона и он должен быть сохранен в образе</value>
+    /// <value>Id бота закрепляется за командой в начале турнира. Передаем команде в начале хакатона и он должен быть сохранен в образе</value>
 
-        [DataMember(Name="bot_id")]
-        public string BotId { get; }
+    [DataMember(Name="bot_id")]
+    public string BotId { get; }
 
-        /// <summary>
-        /// Пароли бота закрепляется за командой в начале турнира. Передаем команде в начале хакатона и он должен быть сохранен в образе
-        /// </summary>
-        /// <value>Пароли бота закрепляется за командой в начале турнира. Передаем команде в начале хакатона и он должен быть сохранен в образе</value>
+    /// <summary>
+    /// Пароли бота закрепляется за командой в начале турнира. Передаем команде в начале хакатона и он должен быть сохранен в образе
+    /// </summary>
+    /// <value>Пароли бота закрепляется за командой в начале турнира. Передаем команде в начале хакатона и он должен быть сохранен в образе</value>
 
-        [DataMember(Name="password")]
-        public string Password { get; }
+    [DataMember(Name="password")]
+    public string Password { get; }
 
-        /// <summary>
-        /// Gets or Sets BotUrl
-        /// </summary>
+    /// <summary>
+    /// Gets or Sets BotUrl
+    /// </summary>
 
-        [DataMember(Name="bot_url")]
-        public string BotUrl { get; }
+    [DataMember(Name="bot_url")]
+    public string BotUrl { get; }
 
-        /// <summary>
-        /// Returns the string presentation of the object
-        /// </summary>
-        /// <returns>String presentation of the object</returns>
-        public override string ToString()
+    /// <summary>
+    /// Returns the string presentation of the object
+    /// </summary>
+    /// <returns>String presentation of the object</returns>
+    public override string ToString()
+    {
+        var sb = new StringBuilder();
+        sb.Append("class RegisterBotInSessionRequest {\n");
+        sb.Append("  BotId: ").Append(BotId).Append('\n');
+        sb.Append("  Password: ").Append(Password).Append('\n');
+        sb.Append("  BotUrl: ").Append(BotUrl).Append('\n');
+        sb.Append("}\n");
+        return sb.ToString();
+    }
+
+    /// <summary>
+    /// Returns the JSON string presentation of the object
+    /// </summary>
+    /// <returns>JSON string presentation of the object</returns>
+    public string ToJson()
+    {
+        return JsonConvert.SerializeObject(this, Formatting.Indented);
+    }
+
+    /// <summary>
+    /// Returns true if objects are equal
+    /// </summary>
+    /// <param name="obj">Object to be compared</param>
+    /// <returns>Boolean</returns>
+    public override bool Equals(object? obj)
+    {
+        if (ReferenceEquals(null, obj)) return false;
+        if (ReferenceEquals(this, obj)) return true;
+        return obj.GetType() == GetType() && Equals((RegisterBotInSessionRequest)obj);
+    }
+
+    /// <summary>
+    /// Returns true if RegisterBotInSessionRequest instances are equal
+    /// </summary>
+    /// <param name="other">Instance of RegisterBotInSessionRequest to be compared</param>
+    /// <returns>Boolean</returns>
+    public bool Equals(RegisterBotInSessionRequest? other)
+    {
+        if (ReferenceEquals(null, other)) return false;
+        if (ReferenceEquals(this, other)) return true;
+
+        return 
+            (
+                BotId == other.BotId ||
+                BotId.Equals(other.BotId)
+            ) && 
+            (
+                Password == other.Password ||
+                Password != null &&
+                Password.Equals(other.Password)
+            ) && 
+            (
+                BotUrl == other.BotUrl ||
+                BotUrl.Equals(other.BotUrl)
+            );
+    }
+
+    /// <summary>
+    /// Gets the hash code
+    /// </summary>
+    /// <returns>Hash code</returns>
+    public override int GetHashCode()
+    {
+        unchecked // Overflow is fine, just wrap
         {
-            var sb = new StringBuilder();
-            sb.Append("class RegisterBotInSessionRequest {\n");
-            sb.Append("  BotId: ").Append(BotId).Append('\n');
-            sb.Append("  Password: ").Append(Password).Append('\n');
-            sb.Append("  BotUrl: ").Append(BotUrl).Append('\n');
-            sb.Append("}\n");
-            return sb.ToString();
+            var hashCode = 41;
+            // Suitable nullity checks etc, of course :)
+            hashCode = hashCode * 59 + BotId.GetHashCode();
+            hashCode = hashCode * 59 + Password.GetHashCode();
+            hashCode = hashCode * 59 + BotUrl.GetHashCode();
+            return hashCode;
         }
+    }
 
-        /// <summary>
-        /// Returns the JSON string presentation of the object
-        /// </summary>
-        /// <returns>JSON string presentation of the object</returns>
-        public string ToJson()
-        {
-            return JsonConvert.SerializeObject(this, Formatting.Indented);
-        }
+    #region Operators
+#pragma warning disable 1591
 
-        /// <summary>
-        /// Returns true if objects are equal
-        /// </summary>
-        /// <param name="obj">Object to be compared</param>
-        /// <returns>Boolean</returns>
-        public override bool Equals(object? obj)
-        {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            return obj.GetType() == GetType() && Equals((RegisterBotInSessionRequest)obj);
-        }
+    public static bool operator ==(RegisterBotInSessionRequest left, RegisterBotInSessionRequest right) => Equals(left, right);
 
-        /// <summary>
-        /// Returns true if RegisterBotInSessionRequest instances are equal
-        /// </summary>
-        /// <param name="other">Instance of RegisterBotInSessionRequest to be compared</param>
-        /// <returns>Boolean</returns>
-        public bool Equals(RegisterBotInSessionRequest? other)
-        {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
-
-            return 
-                (
-                    BotId == other.BotId ||
-                    BotId.Equals(other.BotId)
-                ) && 
-                (
-                    Password == other.Password ||
-                    Password != null &&
-                    Password.Equals(other.Password)
-                ) && 
-                (
-                    BotUrl == other.BotUrl ||
-                    BotUrl.Equals(other.BotUrl)
-                );
-        }
-
-        /// <summary>
-        /// Gets the hash code
-        /// </summary>
-        /// <returns>Hash code</returns>
-        public override int GetHashCode()
-        {
-            unchecked // Overflow is fine, just wrap
-            {
-                var hashCode = 41;
-                // Suitable nullity checks etc, of course :)
-                    hashCode = hashCode * 59 + BotId.GetHashCode();
-                    hashCode = hashCode * 59 + Password.GetHashCode();
-                    hashCode = hashCode * 59 + BotUrl.GetHashCode();
-                return hashCode;
-            }
-        }
-
-        #region Operators
-        #pragma warning disable 1591
-
-        public static bool operator ==(RegisterBotInSessionRequest left, RegisterBotInSessionRequest right) => Equals(left, right);
-
-        public static bool operator !=(RegisterBotInSessionRequest left, RegisterBotInSessionRequest right) => !Equals(left, right);
+    public static bool operator !=(RegisterBotInSessionRequest left, RegisterBotInSessionRequest right) => !Equals(left, right);
 
 #pragma warning restore 1591
-        #endregion Operators
-    }
+    #endregion Operators
 }
