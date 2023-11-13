@@ -24,7 +24,7 @@ builder.Services.AddSwaggerGen(c =>
         Description = "Tic-Tac-Toe bot (ASP.NET Core 7.0)"
     });
     c.CustomSchemaIds(type => type.FullName);
-    c.IncludeXmlComments($"{AppContext.BaseDirectory}{Path.DirectorySeparatorChar}{builder.Environment.ApplicationName}.xml");
+    // c.IncludeXmlComments($"{AppContext.BaseDirectory}{Path.DirectorySeparatorChar}{builder.Environment.ApplicationName}.xml");
 });
 
 var app = builder.Build();

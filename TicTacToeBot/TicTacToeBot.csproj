@@ -2,7 +2,6 @@
 
     <PropertyGroup>
         <Description>TicTacToeBot</Description>
-        <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <PreserveCompilationContext>true</PreserveCompilationContext>
         <AssemblyName>TicTacToeBot</AssemblyName>
         <PackageId>TicTacToeBot</PackageId>
