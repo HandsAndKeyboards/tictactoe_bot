@@ -25,7 +25,7 @@ public class BotTurnRequest : IEquatable<BotTurnRequest>
     /// </summary>
 
     [DataMember(Name="game_field")]
-    public string GameField { get; }
+    public string GameField { get; set; }
 
     /// <summary>
     /// Returns the string presentation of the object
