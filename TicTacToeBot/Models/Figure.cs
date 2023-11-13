@@ -24,10 +24,11 @@ namespace TicTacToeBot.Models
               /// Enum XEnum for x
               /// </summary>
               [EnumMember(Value = "x")]
-              XEnum = 0,
+              X = 0,
               /// <summary>
               /// Enum OEnum for o
               /// </summary>
               [EnumMember(Value = "o")]
-              OEnum = 1          }
+              O = 1
+          }
 }

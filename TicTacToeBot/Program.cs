@@ -1,34 +1,17 @@
 using Microsoft.OpenApi.Models;
+using TicTacToeBot.Config;
 
 var loggerFactory = LoggerFactory.Create(c => c.AddConsole());
 var programLogger = loggerFactory.CreateLogger<Program>();
 
 var builder = WebApplication.CreateBuilder(args);
 
+if (!CreateBotConfig())
+    return;
+
 // Add services to the container.
-
-var sessionId = Environment.GetEnvironmentVariable("SESSION_ID");
-if (sessionId == null)
-{
-    programLogger.LogCritical("env variable \"SESSION_ID\" not defined");
-    return;
-}
-
-var botUrl = Environment.GetEnvironmentVariable("BOT_URL");
-if (botUrl == null)
-{
-    programLogger.LogCritical("env variable \"BOT_URL\" not defined");
-    return;
-}
-
-var mediatorUrl = Environment.GetEnvironmentVariable("MEDIATOR_URL");
-if (mediatorUrl == null)
-{
-    programLogger.LogCritical("env variable \"MEDIATOR_URL\" not defined");
-    return;
-}
-
 builder.Services.AddControllers();
+builder.Services.AddMemoryCache();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 
@@ -67,3 +50,39 @@ if (app.Environment.IsDevelopment())
 
 
 app.Run();
+return;
+
+bool CreateBotConfig()
+{
+    var sessionId = Environment.GetEnvironmentVariable("SESSION_ID");
+    if (sessionId == null)
+    {
+        programLogger.LogCritical("env variable \"SESSION_ID\" not defined");
+        return false;
+    }
+
+    var botUrl = Environment.GetEnvironmentVariable("BOT_URL");
+    if (botUrl == null)
+    {
+        programLogger.LogCritical("env variable \"BOT_URL\" not defined");
+        return false;
+    }
+
+    var mediatorUrl = Environment.GetEnvironmentVariable("MEDIATOR_URL");
+    if (mediatorUrl == null)
+    {
+        programLogger.LogCritical("env variable \"MEDIATOR_URL\" not defined");
+        return false;
+    }
+
+    var botConfig = new BotConfig
+    {
+        botUrl = botUrl,
+        mediatorUrl = mediatorUrl,
+        SessionId = sessionId
+    };
+
+    builder.Services.AddSingleton(botConfig);
+    return true;
+}
+

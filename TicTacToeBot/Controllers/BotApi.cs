@@ -10,6 +10,7 @@
 
 using IO.Swagger.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.Annotations;
 using TicTacToeBot.Attributes;
@@ -22,7 +23,14 @@ namespace TicTacToeBot.Controllers
     /// </summary>
     [ApiController]
     public class BotApiController : ControllerBase
-    { 
+    {
+        private readonly IMemoryCache _cache;
+
+        public BotApiController(IMemoryCache cache)
+        {
+            _cache = cache;
+        }
+
         /// <summary>
         /// Запрос бота сделать ход
         /// </summary>
@@ -35,7 +43,8 @@ namespace TicTacToeBot.Controllers
         [SwaggerOperation("MakeAMove")]
         [SwaggerResponse(statusCode: 200, type: typeof(BotTurnResponse), description: "Бот успешно сходил")]
         public virtual IActionResult MakeAMove([FromBody]BotTurnRequest body)
-        { 
+        {
+            var figure = _cache.Get<Figure>("figure");
             //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(200, default(BotTurnResponse));
             string? exampleJson = null;
