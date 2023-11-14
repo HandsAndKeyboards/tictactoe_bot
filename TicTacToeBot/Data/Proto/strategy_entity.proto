@@ -1,0 +1,9 @@
+syntax = "proto3";
+package test_dotnet.Data.Entities;
+
+import "strategy_node_entity.proto";
+
+message StrategyEntity
+{
+  StrategyNodeEntity _rootNode = 1;
+}

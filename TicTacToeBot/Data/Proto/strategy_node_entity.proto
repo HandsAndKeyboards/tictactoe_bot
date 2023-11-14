@@ -1,0 +1,9 @@
+syntax = "proto3";
+package test_dotnet.Data.Entities;
+
+message StrategyNodeEntity {
+  uint32 Content = 1;
+  bool IsKey = 2;
+  map<uint32, StrategyNodeEntity> ChildNodes = 3;
+}
+

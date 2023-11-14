@@ -10,7 +10,7 @@ public class StrategyNode
     /// <summary>
     /// Символ, содержащийся в узле
     /// </summary>
-    public char Content { get; init; }
+    public char Content { get; set; }
 
     /// <summary>
     /// Содержит ли текуший узел корректный ключ
@@ -20,7 +20,7 @@ public class StrategyNode
     /// <summary>
     /// Дочерние узлы
     /// </summary>
-    public StrategyNodes ChildNodes { get; } = new();
+    public StrategyNodes ChildNodes { get; set; } = new();
 
 
 
