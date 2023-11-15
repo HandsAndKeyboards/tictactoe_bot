@@ -1,6 +1,6 @@
 ﻿namespace TicTacToeBot.Models.Strategy;
 
-public static class NodeContent
+public static class NodeAllowedContent
 {
     public const char X = 'x';
     public const char O = 'o';

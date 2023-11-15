@@ -1,6 +1,4 @@
-﻿using static TicTacToeBot.Models.Strategy.NodeContent;
-
-namespace TicTacToeBot.Models.Strategy;
+﻿namespace TicTacToeBot.Models.Strategy;
 
 /// <summary>
 /// Узел стратегии. Содержит 
@@ -10,7 +8,7 @@ public class StrategyNode
     /// <summary>
     /// Символ, содержащийся в узле
     /// </summary>
-    public char Content { get; set; }
+    public char Content => _content.Value;
 
     /// <summary>
     /// Содержит ли текуший узел корректный ключ
@@ -24,19 +22,25 @@ public class StrategyNode
 
 
 
+    private readonly StrategyNodeContent _content; 
+
+
+
     /// <summary>
     /// Конструктор узла
     /// </summary>
     /// <param name="content">Символ, содержащийся в узле</param>
     /// <param name="isKey">Содержит ли текуший узел корректный ключ</param>
-    /// <exception cref="ArgumentException">Входящий символ не принимает значение из списка: <see cref="NodeContent"/></exception>
-    public StrategyNode(char content, bool isKey = false)
+    /// <exception cref="ArgumentException">Входящий символ не принимает значение из списка: <see cref="NodeAllowedContent"/></exception>
+    public StrategyNode(StrategyNodeContent content, bool isKey = false)
     {
-        if (!IsContentAllowed(content))
-            throw new ArgumentException($"Невалидное значение: {content}");
-
-        Content = content;
+        _content = content;
         IsKey = isKey;
+    }
+
+    public StrategyNode(char content, bool isKey = false) 
+        : this(new StrategyNodeContent(content), isKey)
+    {
     }
 
 
@@ -56,9 +60,4 @@ public class StrategyNode
 
         ChildNodes[c] = child;
     }
-
-
-
-    private static bool IsContentAllowed(char c) =>
-        c is X or O or Whitespace or RootNodeContent;
 }

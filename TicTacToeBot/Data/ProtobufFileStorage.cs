@@ -8,11 +8,11 @@ namespace TicTacToeBot.Data;
 
 public class ProtobufFileStorage : IStrategiesFileStorage
 {
-    public void WriteToFile(Strategy strategy, string path)
+    public void WriteToFile(Strategies strategies, string path)
     {
         CreateDirectoryIfNotExists(path);
         
-        var rootEntity = SerializeStrategy(strategy.RootNode);
+        var rootEntity = SerializeStrategy(strategies.RootNode);
         var strategyEntity = new StrategyEntity { RootNode = rootEntity };
 
         using var file = File.Create(path);
@@ -20,7 +20,7 @@ public class ProtobufFileStorage : IStrategiesFileStorage
         strategyEntity.WriteTo(outStream);
     }
 
-    public Strategy ReadFromFile(string path)
+    public Strategies ReadFromFile(string path)
     {
         if (!File.Exists(path))
             throw new FileNotFoundException($"Файл {path} не существует");
@@ -32,7 +32,7 @@ public class ProtobufFileStorage : IStrategiesFileStorage
         var rootEntity = strategyEntity.RootNode;
 
         var root = DeserializeStrategy(rootEntity);
-        var strategy = new Strategy(root);
+        var strategy = new Strategies(root);
         return strategy;
     }
 

@@ -54,9 +54,9 @@ void Precalculate()
     Console.Out.WriteLine("Готово");
 }
 
-Strategy CalculateStrategies(int steps)
+Strategies CalculateStrategies(int steps)
 {
-    var precalculated = new Strategy();
+    var precalculated = new Strategies();
     precalculated.Add("xox");
     return precalculated;
 }
