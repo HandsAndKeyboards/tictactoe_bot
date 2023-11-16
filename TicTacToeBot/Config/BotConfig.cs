@@ -1,20 +1,10 @@
 namespace TicTacToeBot.Config;
 
-/// <summary>
-/// 
-/// </summary>
 public class BotConfig
 {
-    /// <summary>
-    /// 
-    /// </summary>
-    public string SessionId;
-
-    public string botUrl;
-
-    public string mediatorUrl;
-
-    public string botId;
-    
-    public string password;
+    public required string SessionId { get; init; }
+    public required string BotUrl { get; init; }
+    public required string MediatorUrl { get; init; }
+    public required string BotId { get; init; }
+    public required string Password { get; init; }
 }

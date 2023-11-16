@@ -1,10 +1,8 @@
 using Microsoft.OpenApi.Models;
-using TicTacToeBot;
-using TicTacToeBot.Config;
-using TicTacToeBot.Models;
-using TicTacToeBot.Services;
-using TicTacToeBot.Bots.MDTFbot;
+using TicTacToeBot.Bots;
 using TicTacToeBot.Bots.MCTSbot;
+using TicTacToeBot.Bots.MDTFbot;
+using TicTacToeBot.Config;
 
 var loggerFactory = LoggerFactory.Create(c => c.AddConsole());
 var programLogger = loggerFactory.CreateLogger<Program>();
@@ -18,7 +16,7 @@ builder.Services.AddMemoryCache();
 var config = CreateBotConfig();
 if (config == null)
     return;
-StartBotByENV();
+StartBotByEnv();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -67,50 +65,75 @@ return;
 BotConfig? CreateBotConfig()
 {
     var sessionId = Environment.GetEnvironmentVariable("SESSION_ID");
-    if (sessionId == null)
+    if (string.IsNullOrEmpty(sessionId))
     {
         programLogger.LogCritical("env variable \"SESSION_ID\" not defined");
         return null;
     }
 
     var botUrl = Environment.GetEnvironmentVariable("BOT_URL");
-    if (botUrl == null)
+    if (string.IsNullOrEmpty(botUrl))
     {
         programLogger.LogCritical("env variable \"BOT_URL\" not defined");
         return null;
     }
 
     var mediatorUrl = Environment.GetEnvironmentVariable("MEDIATOR_URL");
-    if (mediatorUrl == null)
+    if (string.IsNullOrEmpty(mediatorUrl))
     {
         programLogger.LogCritical("env variable \"MEDIATOR_URL\" not defined");
+        return null;
+    }
+    
+    var botId = Environment.GetEnvironmentVariable("BOT_ID");
+    if (string.IsNullOrEmpty(botId))
+    {
+        programLogger.LogCritical("env variable \"BOT_ID\" not defined");
+        return null;
+    }
+    
+    var password = Environment.GetEnvironmentVariable("BOT_PASSWORD");
+    if (string.IsNullOrEmpty(password))
+    {
+        programLogger.LogCritical("env variable \"BOT_PASSWORD\" not defined");
         return null;
     }
 
     return new BotConfig
     {
-        botUrl = botUrl!,
-        mediatorUrl = mediatorUrl!,
-        SessionId = sessionId!
+        BotUrl = botUrl,
+        MediatorUrl = botId,
+        SessionId = sessionId,
+        BotId = botId,
+        Password = password,
     };
-
 }
 
-async Task StartBot(BotConfig botConfig)
+void StartBotByEnv()
 {
-    var mediator = new MediatorService(botConfig);
-    var figure = await mediator.RegistrationBot();
-    var bot = new Bot(figure == Figure.X ? 'x' : 'o');
+    ITicTacToeBot bot;
+    
+    var figure = GetFigure();
+    var botType = GetBotType();
+    switch (botType)
+    {
+        case "MDTF": 
+            bot = new Bot(figure);
+            break;
+        case "MCST":
+            bot = new MCTSRunner();
+            break;
+        default:
+            throw new ApplicationException("");
+    }
+
     builder.Services.AddSingleton(bot);
 }
 
-void StartBotByENV()
-{
-    var figure = Environment.GetEnvironmentVariable("BOT_FIGURE");
+char GetFigure() =>
+    Environment.GetEnvironmentVariable("BOT_FIGURE")?.ElementAt(0) 
+        ?? throw new ApplicationException("env variable BOT_FIGURE is not presented or contains incorrect value");
 
-    var bot = new Bot(figure[0]);
-    builder.Services.AddSingleton(bot);
-
-    var MCTS_bot = new MCTSRunner();
-    builder.Services.AddSingleton(MCTS_bot);
-}
+string GetBotType() =>
+    Environment.GetEnvironmentVariable("PLAYING_BOT_TYPE") 
+        ?? throw new ApplicationException("env variable PLAYING_BOT_TYPE is not presented or contains incorrect value");

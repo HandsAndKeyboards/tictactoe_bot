@@ -1,15 +1,9 @@
 ﻿using TicTacToeBot.Bots.MCTSbot.interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TicTacToeBot.Bots.MCTSbot.interfaces;
 
 namespace TicTacToeBot.Bots.MCTSbot;
 
 // Wrapper for running MCTS by providing board as string
-public class MCTSRunner
+public class MCTSRunner : ITicTacToeBot
 {
     public IState generate_bitboard(string board_state)
     {
@@ -59,7 +53,7 @@ public class MCTSRunner
         return _root_state;
     }
 
-    public string Run(string board_state)
+    public string Turn(string board_state)
     {
         var _searcher = new MCTSSearcher();
         var _root_state = generate_bitboard(board_state);

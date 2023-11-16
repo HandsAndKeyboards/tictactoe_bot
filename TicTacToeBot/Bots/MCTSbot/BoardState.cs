@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 using TicTacToeBot.Bots.MCTSbot.interfaces;
 
 namespace TicTacToeBot.Bots.MCTSbot;
@@ -254,8 +250,8 @@ public class BoardState : IState
                 else
                     sb.Append("_");
 
-                if (j % 19 == 18)
-                    sb.AppendLine();
+                // if (j % 19 == 18)
+                    // sb.AppendLine();
             }
         }
         return sb.ToString();

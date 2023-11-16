@@ -1,6 +1,6 @@
 namespace TicTacToeBot.Bots.MDTFbot;
 
-public class Bot
+public class Bot : ITicTacToeBot
 {
     private Move _bestMove;
 

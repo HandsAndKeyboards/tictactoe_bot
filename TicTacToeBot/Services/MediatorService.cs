@@ -12,13 +12,13 @@ public class MediatorService
     public MediatorService(BotConfig config)
     {
         _config = config;
-        _httpClient = new HttpClient { BaseAddress = new Uri(config.mediatorUrl) };
+        _httpClient = new HttpClient { BaseAddress = new Uri(config.MediatorUrl) };
     }
 
     public async Task<Figure> RegistrationBot()
     {
         var request = new RegisterBotInSessionRequest
-            { BotId = _config.botId, BotUrl = _config.botUrl, Password = _config.password };
+            { BotId = _config.BotId, BotUrl = _config.BotUrl, Password = _config.Password };
         var response = await _httpClient.PostAsJsonAsync($"/sessions/{_config.SessionId}/registration", request);
         return response.StatusCode switch
         {

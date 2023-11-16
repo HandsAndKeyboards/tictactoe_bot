@@ -9,13 +9,10 @@
  */
 
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Memory;
-using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.Annotations;
 using TicTacToeBot.Attributes;
+using TicTacToeBot.Bots;
 using TicTacToeBot.Models;
-using TicTacToeBot.Bots.MDTFbot;
-using TicTacToeBot.Bots.MCTSbot;
 
 namespace TicTacToeBot.Controllers;
 
@@ -25,15 +22,11 @@ namespace TicTacToeBot.Controllers;
 [ApiController]
 public class BotApiController : ControllerBase
 {
-    private readonly IMemoryCache _cache;
-    private readonly Bot _bot;
-    private readonly MCTSRunner _MCTS_bot;
-
-    public BotApiController(IMemoryCache cache, Bot bot, MCTSRunner MCTS_bot)
+    private readonly ITicTacToeBot _bot;
+    
+    public BotApiController(ITicTacToeBot bot)
     {
-        _cache = cache;
         _bot = bot;
-        _MCTS_bot = MCTS_bot;
     }
 
     /// <summary>
@@ -48,5 +41,5 @@ public class BotApiController : ControllerBase
     [SwaggerOperation("MakeAMove")]
     [SwaggerResponse(statusCode: 200, type: typeof(BotTurnResponse), description: "Бот успешно сходил")]
     public virtual IActionResult MakeAMove([FromBody] BotTurnRequest body) =>
-        Ok(new BotTurnResponse { GameField = _MCTS_bot.Run(body.GameField) });
+        Ok(new BotTurnResponse { GameField = _bot.Turn(body.GameField) });
 }
