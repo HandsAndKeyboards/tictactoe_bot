@@ -1,17 +1,23 @@
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi.Models;using TicTac;
+using TicTacToeBot;
 using TicTacToeBot.Config;
+using TicTacToeBot.Models;
+using TicTacToeBot.Services;
 
 var loggerFactory = LoggerFactory.Create(c => c.AddConsole());
 var programLogger = loggerFactory.CreateLogger<Program>();
 
 var builder = WebApplication.CreateBuilder(args);
 
-if (!CreateBotConfig())
-    return;
-
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddMemoryCache();
+
+var config = CreateBotConfig();
+if (config == null)
+    return;
+StartBotByENV();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 
@@ -27,7 +33,9 @@ builder.Services.AddSwaggerGen(c =>
     // c.IncludeXmlComments($"{AppContext.BaseDirectory}{Path.DirectorySeparatorChar}{builder.Environment.ApplicationName}.xml");
 });
 
+
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -48,41 +56,56 @@ if (app.Environment.IsDevelopment())
     app.UseDeveloperExceptionPage();
 }
 
-
 app.Run();
+
+
+
 return;
 
-bool CreateBotConfig()
+BotConfig? CreateBotConfig()
 {
     var sessionId = Environment.GetEnvironmentVariable("SESSION_ID");
     if (sessionId == null)
     {
         programLogger.LogCritical("env variable \"SESSION_ID\" not defined");
-        return false;
+        return null;
     }
 
     var botUrl = Environment.GetEnvironmentVariable("BOT_URL");
     if (botUrl == null)
     {
         programLogger.LogCritical("env variable \"BOT_URL\" not defined");
-        return false;
+        return null;
     }
 
     var mediatorUrl = Environment.GetEnvironmentVariable("MEDIATOR_URL");
     if (mediatorUrl == null)
     {
         programLogger.LogCritical("env variable \"MEDIATOR_URL\" not defined");
-        return false;
+        return null;
     }
 
-    var botConfig = new BotConfig
+    return new BotConfig
     {
-        botUrl = botUrl,
-        mediatorUrl = mediatorUrl,
-        SessionId = sessionId
+        botUrl = botUrl!,
+        mediatorUrl = mediatorUrl!,
+        SessionId = sessionId!
     };
 
-    builder.Services.AddSingleton(botConfig);
-    return true;
 }
 
+async Task StartBot(BotConfig botConfig)
+{
+    var mediator = new MediatorService(botConfig);
+    var figure = await mediator.RegistrationBot();
+    var bot = new Bot(figure == Figure.X ? 'x' : 'o');
+    builder.Services.AddSingleton(bot);
+}
+
+void StartBotByENV()
+{
+    var figure = Environment.GetEnvironmentVariable("BOT_FIGURE");
+
+    var bot = new Bot(figure[0]);
+    builder.Services.AddSingleton(bot);
+}

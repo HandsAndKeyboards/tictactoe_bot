@@ -36,6 +36,24 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Release"
       }
+    },
+    "BOT1": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "applicationUrl": "http://localhost:8002",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Release",
+        "BOT_FIGURE": "o"
+      }
+    },
+    "BOT2": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "applicationUrl": "http://localhost:8001",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Release",
+        "BOT_FIGURE": "x"
+      }
     }
   }
 }
