@@ -1,8 +1,10 @@
-using Microsoft.OpenApi.Models;using TicTac;
+using Microsoft.OpenApi.Models;
 using TicTacToeBot;
 using TicTacToeBot.Config;
 using TicTacToeBot.Models;
 using TicTacToeBot.Services;
+using TicTacToeBot.Bots.MDTFbot;
+using TicTacToeBot.Bots.MCTSbot;
 
 var loggerFactory = LoggerFactory.Create(c => c.AddConsole());
 var programLogger = loggerFactory.CreateLogger<Program>();
@@ -108,4 +110,7 @@ void StartBotByENV()
 
     var bot = new Bot(figure[0]);
     builder.Services.AddSingleton(bot);
+
+    var MCTS_bot = new MCTSRunner();
+    builder.Services.AddSingleton(MCTS_bot);
 }

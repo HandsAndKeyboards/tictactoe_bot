@@ -1,4 +1,4 @@
-namespace TicTac;
+namespace TicTacToeBot.Bots.MDTFbot;
 
 public class Bot
 {
@@ -71,8 +71,8 @@ public class Bot
     {
         var arr = new char[19, 19];
         for (var j = 0; j < 19; j++)
-        for (var k = 0; k < 19; k++)
-            arr[j, k] = board[19 * j + k];
+            for (var k = 0; k < 19; k++)
+                arr[j, k] = board[19 * j + k];
 
         return arr;
     }
@@ -283,20 +283,20 @@ public class Bot
         var maxColumn = restrictions[3];
 
         for (var row = minRow - 2; row <= maxRow + 2; row++)
-        for (var column = minColumn - 2; column <= maxColumn + 2; column++)
-        {
-            if (board[row, column] != '_' || RemoteCell(board, row, column)) continue;
-            var move = new Move
+            for (var column = minColumn - 2; column <= maxColumn + 2; column++)
             {
-                Row = row,
-                Column = column,
-                Score = EvaluateMove(board, row, column, player)
-            };
-            if (move.Score == MaxScore)
-                return new List<Move> { move };
+                if (board[row, column] != '_' || RemoteCell(board, row, column)) continue;
+                var move = new Move
+                {
+                    Row = row,
+                    Column = column,
+                    Score = EvaluateMove(board, row, column, player)
+                };
+                if (move.Score == MaxScore)
+                    return new List<Move> { move };
 
-            availSpotsScore.Add(move);
-        }
+                availSpotsScore.Add(move);
+            }
 
         return availSpotsScore.OrderByDescending(x => x.Score).Take(10).ToList();
     }
@@ -472,35 +472,35 @@ public class Bot
         var maxColumn = restrictions[3];
 
         for (var row = minRow; row < maxRow + 1; row++)
-        for (var column = minColumn; column < maxColumn + 1; column++)
-        {
-            if (board[row, column] != figure) continue;
-            var block = 0;
-            var piece = 1;
-            // left
-            if (column == 0 || board[row, column - 1] != '_') block++;
-            // pieceNum
-            for (column++; column < Columns && board[row, column] == figure; column++) piece++;
-            // right
-            if (column == Columns || board[row, column] != '_')
-                block++;
-            score += EvaluateBlock(block, piece);
-        }
+            for (var column = minColumn; column < maxColumn + 1; column++)
+            {
+                if (board[row, column] != figure) continue;
+                var block = 0;
+                var piece = 1;
+                // left
+                if (column == 0 || board[row, column - 1] != '_') block++;
+                // pieceNum
+                for (column++; column < Columns && board[row, column] == figure; column++) piece++;
+                // right
+                if (column == Columns || board[row, column] != '_')
+                    block++;
+                score += EvaluateBlock(block, piece);
+            }
 
         for (var column = minColumn; column < maxColumn + 1; column++)
-        for (var row = minRow; row < maxRow + 1; row++)
-        {
-            if (board[row, column] != figure) continue;
-            var block = 0;
-            var piece = 1;
-            // left
-            if (row == 0 || board[row - 1, column] != '_') block++;
-            // pieceNum
-            for (row++; row < Rows && board[row, column] == figure; row++) piece++;
-            // right
-            if (row == Rows || board[row, column] != '_') block++;
-            score += EvaluateBlock(block, piece);
-        }
+            for (var row = minRow; row < maxRow + 1; row++)
+            {
+                if (board[row, column] != figure) continue;
+                var block = 0;
+                var piece = 1;
+                // left
+                if (row == 0 || board[row - 1, column] != '_') block++;
+                // pieceNum
+                for (row++; row < Rows && board[row, column] == figure; row++) piece++;
+                // right
+                if (row == Rows || board[row, column] != '_') block++;
+                score += EvaluateBlock(block, piece);
+            }
 
         for (var n = minRow; n < maxColumn - minColumn + maxRow; n++)
         {
@@ -633,14 +633,14 @@ public class Bot
         var maxColumn = int.MinValue + 1;
 
         for (var row = 0; row < Rows; row++)
-        for (var column = 0; column < Columns; column++)
-        {
-            if (board[row, column] == '_') continue;
-            minRow = Math.Min(minRow, row);
-            minColumn = Math.Min(minColumn, column);
-            maxRow = Math.Max(maxRow, row);
-            maxColumn = Math.Max(maxColumn, column);
-        }
+            for (var column = 0; column < Columns; column++)
+            {
+                if (board[row, column] == '_') continue;
+                minRow = Math.Min(minRow, row);
+                minColumn = Math.Min(minColumn, column);
+                maxRow = Math.Max(maxRow, row);
+                maxColumn = Math.Max(maxColumn, column);
+            }
 
         if (minRow - 2 < 0) minRow = 2;
 
