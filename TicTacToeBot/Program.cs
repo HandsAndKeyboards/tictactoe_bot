@@ -3,6 +3,8 @@ using TicTacToeBot.Bots;
 using TicTacToeBot.Bots.MCTSbot;
 using TicTacToeBot.Bots.MDTFbot;
 using TicTacToeBot.Config;
+using TicTacToeBot.Models;
+using TicTacToeBot.Services;
 
 var loggerFactory = LoggerFactory.Create(c => c.AddConsole());
 var programLogger = loggerFactory.CreateLogger<Program>();
@@ -16,7 +18,9 @@ builder.Services.AddMemoryCache();
 var config = CreateBotConfig();
 if (config == null)
     return;
-StartBotByEnv();
+
+await StartBot(config);
+// StartBotByEnv();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -102,11 +106,19 @@ BotConfig? CreateBotConfig()
     return new BotConfig
     {
         BotUrl = botUrl,
-        MediatorUrl = botId,
+        MediatorUrl = mediatorUrl,
         SessionId = sessionId,
         BotId = botId,
         Password = password,
     };
+}
+
+async Task StartBot(BotConfig botConfig)
+{
+    var mediator = new MediatorService(botConfig);
+    var figure = await mediator.RegistrationBot();
+    var bot = new Bot(figure == Figures.X ? Figures.X : Figures.O);
+    builder.Services.AddSingleton(bot);
 }
 
 void StartBotByEnv()

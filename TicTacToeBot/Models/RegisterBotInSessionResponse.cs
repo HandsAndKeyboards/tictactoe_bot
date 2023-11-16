@@ -23,9 +23,8 @@ public partial class RegisterBotInSessionResponse : IEquatable<RegisterBotInSess
     /// <summary>
     /// Gets or Sets Figure
     /// </summary>
-
     [DataMember(Name="figure")]
-    public Figure Figure { get; set; }
+    public char Figure { get; set; }
 
     /// <summary>
     /// Returns the string presentation of the object

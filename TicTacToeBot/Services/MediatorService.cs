@@ -15,17 +15,22 @@ public class MediatorService
         _httpClient = new HttpClient { BaseAddress = new Uri(config.MediatorUrl) };
     }
 
-    public async Task<Figure> RegistrationBot()
+    public async Task<char> RegistrationBot()
     {
         var request = new RegisterBotInSessionRequest
-            { BotId = _config.BotId, BotUrl = _config.BotUrl, Password = _config.Password };
+        { 
+            BotId = _config.BotId, 
+            BotUrl = _config.BotUrl, 
+            Password = _config.Password
+        }; 
         var response = await _httpClient.PostAsJsonAsync($"/sessions/{_config.SessionId}/registration", request);
+
         return response.StatusCode switch
         {
             HttpStatusCode.OK => (await response.Content.ReadFromJsonAsync<RegisterBotInSessionResponse>()).Figure,
-            HttpStatusCode.NotFound => throw new Exception("not found"),
-            HttpStatusCode.BadRequest => throw new Exception("400"),
-            _ => throw new Exception("undefined exception")
+            HttpStatusCode.NotFound => throw new Exception($"not found {await response.Content.ReadAsStringAsync()}"),
+            HttpStatusCode.BadRequest => throw new Exception($"400 {await response.Content.ReadAsStringAsync()}"),
+            _ => throw new Exception($"undefined exception {await response.Content.ReadAsStringAsync()}")
         };
     }
 }
