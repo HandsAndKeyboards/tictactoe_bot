@@ -11,4 +11,9 @@ public static class Constants
     /// Путь к файлу с предвычисленными стратегиями
     /// </summary>
     public static readonly string PrecalculatedStrategiesFilePath = Path.Combine(Path.GetTempPath(), "TicTacToeBot", "precalculated-strategies.bin");
+    
+    
+    
+    public const string BotId = "hak";
+    public const string BotPassword = "Cjq-euL'";
 }

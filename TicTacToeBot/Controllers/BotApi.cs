@@ -16,12 +16,10 @@ using TicTacToeBot.Models;
 
 namespace TicTacToeBot.Controllers;
 
-/// <summary>
-/// 
-/// </summary>
 [ApiController]
 public class BotApiController : ControllerBase
 {
+    // private readonly ITicTacToeBot _bot;
     private readonly ITicTacToeBot _bot;
     
     public BotApiController(ITicTacToeBot bot)
@@ -41,5 +39,5 @@ public class BotApiController : ControllerBase
     [SwaggerOperation("MakeAMove")]
     [SwaggerResponse(statusCode: 200, type: typeof(BotTurnResponse), description: "Бот успешно сходил")]
     public virtual IActionResult MakeAMove([FromBody] BotTurnRequest body) =>
-        Ok(new BotTurnResponse { GameField = _bot.Turn(body.GameField) });
+        Ok(new BotTurnResponse { game_field = _bot.Turn(body.game_field) });
 }

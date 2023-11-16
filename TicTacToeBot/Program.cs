@@ -1,10 +1,10 @@
 using Microsoft.OpenApi.Models;
 using TicTacToeBot.Bots;
-using TicTacToeBot.Bots.MCTSbot;
 using TicTacToeBot.Bots.MDTFbot;
 using TicTacToeBot.Config;
 using TicTacToeBot.Models;
 using TicTacToeBot.Services;
+using static TicTacToeBot.Constants;
 
 var loggerFactory = LoggerFactory.Create(c => c.AddConsole());
 var programLogger = loggerFactory.CreateLogger<Program>();
@@ -89,27 +89,27 @@ BotConfig? CreateBotConfig()
         return null;
     }
     
-    var botId = Environment.GetEnvironmentVariable("BOT_ID");
-    if (string.IsNullOrEmpty(botId))
-    {
-        programLogger.LogCritical("env variable \"BOT_ID\" not defined");
-        return null;
-    }
-    
-    var password = Environment.GetEnvironmentVariable("BOT_PASSWORD");
-    if (string.IsNullOrEmpty(password))
-    {
-        programLogger.LogCritical("env variable \"BOT_PASSWORD\" not defined");
-        return null;
-    }
+    // var botId = Environment.GetEnvironmentVariable("BOT_ID");
+    // if (string.IsNullOrEmpty(botId))
+    // {
+    //     programLogger.LogCritical("env variable \"BOT_ID\" not defined");
+    //     return null;
+    // }
+    //
+    // var password = Environment.GetEnvironmentVariable("BOT_PASSWORD");
+    // if (string.IsNullOrEmpty(password))
+    // {
+    //     programLogger.LogCritical("env variable \"BOT_PASSWORD\" not defined");
+    //     return null;
+    // }
 
     return new BotConfig
     {
         BotUrl = botUrl,
         MediatorUrl = mediatorUrl,
         SessionId = sessionId,
-        BotId = botId,
-        Password = password,
+        BotId = BotId,
+        Password = BotPassword,
     };
 }
 
@@ -118,34 +118,41 @@ async Task StartBot(BotConfig botConfig)
     var mediator = new MediatorService(botConfig);
     var figure = await mediator.RegistrationBot();
     var bot = new Bot(figure == Figures.X ? Figures.X : Figures.O);
-    builder.Services.AddSingleton(bot);
-}
+    builder.Services.AddSingleton(typeof(ITicTacToeBot), bot);
 
-void StartBotByEnv()
-{
-    ITicTacToeBot bot;
+    // ITicTacToeBot bot = (figure == Figures.X) 
+        // ? new Bot(figure == Figures.X ? Figures.X : Figures.O) 
+        // : new MCTSRunner();
     
-    var figure = GetFigure();
-    var botType = GetBotType();
-    switch (botType)
-    {
-        case "MDTF": 
-            bot = new Bot(figure);
-            break;
-        case "MCST":
-            bot = new MCTSRunner();
-            break;
-        default:
-            throw new ApplicationException("");
-    }
-
-    builder.Services.AddSingleton(bot);
+    // builder.Services.AddSingleton(bot);
 }
 
-char GetFigure() =>
-    Environment.GetEnvironmentVariable("BOT_FIGURE")?.ElementAt(0) 
-        ?? throw new ApplicationException("env variable BOT_FIGURE is not presented or contains incorrect value");
-
-string GetBotType() =>
-    Environment.GetEnvironmentVariable("PLAYING_BOT_TYPE") 
-        ?? throw new ApplicationException("env variable PLAYING_BOT_TYPE is not presented or contains incorrect value");
+// void StartBotByEnv()
+// {
+//     ITicTacToeBot bot;
+//     
+//     var figure = GetFigure();
+//     var botType = GetBotType();
+//     switch (botType)
+//     {
+//         case "MDTF": 
+//             bot = new Bot(figure);
+//             break;
+//         case "MCST":
+//             bot = new MCTSRunner();
+//             break;
+//         default:
+//             throw new ApplicationException("");
+//     }
+//
+//     builder.Services.AddSingleton(typeof(ITicTacToeBot), bot);
+//     // builder.Services.AddSingleton<ITicTacToeBot>(bot);
+// }
+//
+// char GetFigure() =>
+//     Environment.GetEnvironmentVariable("BOT_FIGURE")?.ElementAt(0) 
+//         ?? throw new ApplicationException("env variable BOT_FIGURE is not presented or contains incorrect value");
+//
+// string GetBotType() =>
+//     Environment.GetEnvironmentVariable("PLAYING_BOT_TYPE") 
+//         ?? throw new ApplicationException("env variable PLAYING_BOT_TYPE is not presented or contains incorrect value");

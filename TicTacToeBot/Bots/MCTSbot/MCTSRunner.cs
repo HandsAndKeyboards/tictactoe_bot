@@ -3,6 +3,7 @@
 namespace TicTacToeBot.Bots.MCTSbot;
 
 // Wrapper for running MCTS by providing board as string
+[Obsolete("Этот бот работает неточно и медленно и не должне использоваться в релизе")]
 public class MCTSRunner : ITicTacToeBot
 {
     public IState generate_bitboard(string board_state)

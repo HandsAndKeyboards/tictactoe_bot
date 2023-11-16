@@ -25,7 +25,7 @@ public class BotTurnResponse : IEquatable<BotTurnResponse>
     /// </summary>
 
     [DataMember(Name="game_field")]
-    public string GameField { get; set; }
+    public string game_field { get; set; }
 
     /// <summary>
     /// Returns the string presentation of the object
@@ -35,7 +35,7 @@ public class BotTurnResponse : IEquatable<BotTurnResponse>
     {
         var sb = new StringBuilder();
         sb.Append("class BotTurnResponse {\n");
-        sb.Append("  GameField: ").Append(GameField).Append('\n');
+        sb.Append("  GameField: ").Append(game_field).Append('\n');
         sb.Append("}\n");
         return sb.ToString();
     }
@@ -72,8 +72,8 @@ public class BotTurnResponse : IEquatable<BotTurnResponse>
         if (ReferenceEquals(this, other)) return true;
 
         return 
-            GameField == other.GameField ||
-            GameField.Equals(other.GameField);
+            game_field == other.game_field ||
+            game_field.Equals(other.game_field);
     }
 
     /// <summary>
@@ -86,7 +86,7 @@ public class BotTurnResponse : IEquatable<BotTurnResponse>
         {
             var hashCode = 41;
             // Suitable nullity checks etc, of course :)
-            hashCode = hashCode * 59 + GameField.GetHashCode();
+            hashCode = hashCode * 59 + game_field.GetHashCode();
             return hashCode;
         }
     }
