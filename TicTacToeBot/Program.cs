@@ -11,6 +11,9 @@ var programLogger = loggerFactory.CreateLogger<Program>();
 
 var builder = WebApplication.CreateBuilder(args);
 
+var port = Environment.GetEnvironmentVariable("SERVER_PORT") ?? throw new ApplicationException("env variable \"SERVER_PORT\" not defined");
+builder.WebHost.UseUrls($"http://*:{port}");
+
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddMemoryCache();
